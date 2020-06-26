@@ -70,7 +70,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         }
         int radius = 30;
         int margin = 10;
-        Glide.with(this).load(imageUrl).transform(new RoundedCornersTransformation(radius, margin)).into(ivPoster);
+        Glide.with(this).load(imageUrl).placeholder(R.drawable.ic_launcher_foreground).transform(new RoundedCornersTransformation(radius, margin)).into(ivPoster);
 
         AsyncHttpClient client = new AsyncHttpClient();
 

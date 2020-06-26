@@ -17,6 +17,7 @@
         android:layout_marginBottom="0dp"
         android:background="#000000" />
 
+
     <ImageView
         android:id="@+id/ivPoster"
         android:layout_width="120dp"
@@ -49,5 +50,6 @@
         android:layout_toEndOf="@+id/ivPoster"
         android:textColor="#FFFFFF"
         tools:text="A sample intro about a movie that has no relavent plot. This is a row for an app about movies." />
+
 
 </RelativeLayout>
