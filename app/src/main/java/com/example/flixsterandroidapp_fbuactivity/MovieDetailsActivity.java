@@ -33,6 +33,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     TextView tvOverview;
     RatingBar rbVoteAverage;
     ImageView ivPoster;
+    TextView rickRoll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         tvOverview = (TextView) findViewById(R.id.tvOverview);
         rbVoteAverage = (RatingBar) findViewById(R.id.rbVoteAverage);
         ivPoster = (ImageView) findViewById(R.id.ivPoster);
+        rickRoll = (TextView) findViewById(R.id.rickRoll);
 
         // unwrap the movie passed in via intent, using its simple name as a key
         movie = (Movie) Parcels.unwrap(getIntent().getParcelableExtra(Movie.class.getSimpleName()));
@@ -94,6 +96,15 @@ public class MovieDetailsActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                 Log.d("MovieDetails", "waiting");
+            }
+        });
+
+        rickRoll.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MovieDetailsActivity.this, MovieTrailerActivity.class);
+                i.putExtra("youtubePath", "dQw4w9WgXcQ");
+                startActivity(i);
             }
         });
 
