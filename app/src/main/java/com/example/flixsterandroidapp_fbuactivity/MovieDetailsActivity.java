@@ -2,9 +2,11 @@ package com.example.flixsterandroidapp_fbuactivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -62,5 +64,13 @@ public class MovieDetailsActivity extends AppCompatActivity {
         int radius = 30;
         int margin = 10;
         Glide.with(this).load(imageUrl).transform(new RoundedCornersTransformation(radius, margin)).into(ivPoster);
+
+        ivPoster.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MovieDetailsActivity.this, MovieTrailerActivity.class);
+                startActivity(i);
+            }
+        });
     }
 }
