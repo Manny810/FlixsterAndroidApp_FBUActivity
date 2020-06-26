@@ -12,11 +12,16 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.codepath.asynchttpclient.AsyncHttpClient;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.flixsterandroidapp_fbuactivity.models.Movie;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+import okhttp3.Headers;
 
 public class MovieDetailsActivity extends AppCompatActivity {
 
@@ -65,12 +70,33 @@ public class MovieDetailsActivity extends AppCompatActivity {
         int margin = 10;
         Glide.with(this).load(imageUrl).transform(new RoundedCornersTransformation(radius, margin)).into(ivPoster);
 
-        ivPoster.setOnClickListener(new View.OnClickListener(){
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        client.get("https://api.themoviedb.org/3/movie/" + movie.getId() + "/videos?api_key=557bf444fa647aa33e0e1a2de0317f55", new JsonHttpResponseHandler() {
             @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MovieDetailsActivity.this, MovieTrailerActivity.class);
-                startActivity(i);
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                JSONObject jsonObject = json.jsonObject;
+                try {
+                    final String youtubePath = jsonObject.getJSONArray("results").getJSONObject(0).getString("key");
+                    ivPoster.setOnClickListener(new View.OnClickListener(){
+                        @Override
+                        public void onClick(View view) {
+                            Intent i = new Intent(MovieDetailsActivity.this, MovieTrailerActivity.class);
+                            i.putExtra("youtubePath", youtubePath);
+                            startActivity(i);
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                Log.d("MovieDetails", "waiting");
             }
         });
+
+
     }
 }
