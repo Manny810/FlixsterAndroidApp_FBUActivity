@@ -14,6 +14,8 @@ import com.example.flixsterandroidapp_fbuactivity.models.Movie;
 
 import org.parceler.Parcels;
 
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+
 public class MovieDetailsActivity extends AppCompatActivity {
 
     // the movie to display
@@ -57,7 +59,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
             // if phone is in portrait
             imageUrl = movie.getPosterPath();
         }
-
-        Glide.with(this).load(imageUrl).into(ivPoster);
+        int radius = 30;
+        int margin = 10;
+        Glide.with(this).load(imageUrl).transform(new RoundedCornersTransformation(radius, margin)).into(ivPoster);
     }
 }

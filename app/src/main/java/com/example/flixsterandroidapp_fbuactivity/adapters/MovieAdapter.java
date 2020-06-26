@@ -22,6 +22,8 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
     Context context;
@@ -85,7 +87,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                 // if phone is in portrait
                 imageUrl = movie.getPosterPath();
             }
-            Glide.with(context).load(imageUrl).into(ivPoster);
+
+            int radius = 30;
+            int margins = 10;
+            Glide.with(context).load(imageUrl).transform(new RoundedCornersTransformation(radius, margins)).into(ivPoster);
         }
 
         // when the user clicks on a row, show MovieDetailsActivity for the selected movie
