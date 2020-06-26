@@ -2,6 +2,7 @@ package com.example.flixsterandroidapp_fbuactivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -47,6 +48,16 @@ public class MovieDetailsActivity extends AppCompatActivity {
         float voteAverage = movie.getVoteAverage().floatValue();
         rbVoteAverage.setRating(voteAverage = voteAverage > 0 ? voteAverage / 2.0f : voteAverage);
 
-        Glide.with(this).load(movie.getPosterPath()).into(ivPoster);
+        // get image in movie details view
+        String imageUrl;
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            // if phone is in landscape
+            imageUrl = movie.getBackdropPath();
+        } else {
+            // if phone is in portrait
+            imageUrl = movie.getPosterPath();
+        }
+
+        Glide.with(this).load(imageUrl).into(ivPoster);
     }
 }
