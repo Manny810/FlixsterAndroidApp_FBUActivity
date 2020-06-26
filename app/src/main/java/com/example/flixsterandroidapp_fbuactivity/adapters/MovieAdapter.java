@@ -1,6 +1,7 @@
 package com.example.flixsterandroidapp_fbuactivity.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,8 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.flixsterandroidapp_fbuactivity.MovieDetailsActivity;
 import com.example.flixsterandroidapp_fbuactivity.R;
 import com.example.flixsterandroidapp_fbuactivity.models.Movie;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -54,7 +58,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         return movies.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView tvTitle;
         TextView tvOverview;
@@ -65,6 +69,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvOverview = itemView.findViewById(R.id.tvOverview);
             ivPoster = itemView.findViewById(R.id.ivPoster);
+
+            itemView.setOnClickListener(this);
         }
 
         public void bind(Movie movie) {
@@ -76,10 +82,32 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                 // if phone is in landscape
                 imageUrl = movie.getBackdropPath();
             } else {
-                // if phone is in portrait 
+                // if phone is in portrait
                 imageUrl = movie.getPosterPath();
             }
             Glide.with(context).load(imageUrl).into(ivPoster);
+        }
+
+        // when the user clicks on a row, show MovieDetailsActivity for the selected movie
+        @Override
+        public void onClick(View view) {
+            // gets item position
+            int position = getAdapterPosition();
+
+            // make sure the position is valid, i.e. actually exists in teh view
+            if (position != RecyclerView.NO_POSITION){
+                // get the movie at the position
+                Movie movie = movies.get(position);
+
+                // create intent for the new activity
+                Intent intent = new Intent(context, MovieDetailsActivity.class);
+
+                // serialize the movie using parceler, use its short name as a key
+                intent.putExtra(Movie.class.getSimpleName(), Parcels.wrap(movie));
+
+                // show the activity
+                context.startActivity(intent);
+            }
         }
     }
 }
